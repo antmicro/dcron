@@ -322,7 +322,13 @@ EndJob(CronFile *file, CronLine *line, int exit_status)
 		dup2(1, 2);
 		close(mailFd);
 
-		if (!SendMail) {
+		if (SendScript != NULL) {
+			char *scriptName = basename(line->cl_Description);
+
+			fdprintlogf(LOG_DEBUG, 8, "writing using custom %s\n", SendScript);
+
+			execl(SendScript, SendScript, file->cf_FileName, scriptName, NULL); 
+		} else if (!SendMail) {
 			/*
 			 * If using standard sendmail, note in our log (now associated with fd 8)
 			 * that we're trying to mail output
@@ -335,7 +341,6 @@ EndJob(CronFile *file, CronLine *line, int exit_status)
 
 			/* exec failed: pass through and log the error */
 			SendMail = SENDMAIL;
-
 		} else {
 			/*
 			 * If using custom mailer script, just try to exec it

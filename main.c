@@ -24,6 +24,7 @@ Prototype const char *LogHeader;
 Prototype uid_t DaemonUid;
 Prototype pid_t DaemonPid;
 Prototype const char *SendMail;
+Prototype const char *SendScript;
 Prototype const char *Mailto;
 Prototype char *TempDir;
 Prototype char *TempFileFmt;
@@ -38,6 +39,7 @@ const char *TSDir = CRONSTAMPS;
 const char *LogFile = NULL; 	/* opened with mode 0600 */
 const char *LogHeader = LOGHEADER;
 const char *SendMail = NULL;
+const char *SendScript = NULL;
 const char *Mailto = NULL;
 char *TempDir;
 char *TempFileFmt;
@@ -72,7 +74,7 @@ main(int ac, char **av)
 
 	opterr = 0;
 
-	while ((i = getopt(ac,av,"vdl:L:fbSc:s:m:M:t:")) != -1) {
+	while ((i = getopt(ac,av,"vdl:L:fbSc:s:m:M:t:w:")) != -1) {
 		switch (i) {
 			case 'l':
 				{
@@ -160,6 +162,9 @@ main(int ac, char **av)
 				break;
 			case 'm':
 				if (*optarg != 0) Mailto = optarg;
+				break;
+			case 'w':
+				if (*optarg != 0) SendScript = optarg;
 				break;
 			case 'v':
 				printf(VERSION"\n");
@@ -294,6 +299,7 @@ main(int ac, char **av)
 	 */
 
 	printlogf(LOG_NOTICE,"%s " VERSION " dillon's cron daemon, started with loglevel %s\n", av[0], LevelAry[LogLevel]);
+	printlogf(LOG_DEBUG, "SendMail: %s, SendScript: %s\n", SendMail, SendScript);
 	SynchronizeDir(CDir, NULL, 1);
 	SynchronizeDir(SCDir, "root", 1);
 	ReadTimestamps(NULL);

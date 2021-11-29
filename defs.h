@@ -44,6 +44,7 @@
 #include <time.h>
 #include <string.h>
 #include <stdio.h>
+#include <libgen.h>
 
 #define Prototype extern
 #define arysize(ary)	(sizeof(ary)/sizeof((ary)[0]))
