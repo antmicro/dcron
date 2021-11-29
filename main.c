@@ -72,7 +72,7 @@ main(int ac, char **av)
 
 	opterr = 0;
 
-	while ((i = getopt(ac,av,"dl:L:fbSc:s:m:M:t:")) != -1) {
+	while ((i = getopt(ac,av,"vdl:L:fbSc:s:m:M:t:")) != -1) {
 		switch (i) {
 			case 'l':
 				{
@@ -160,6 +160,10 @@ main(int ac, char **av)
 				break;
 			case 'm':
 				if (*optarg != 0) Mailto = optarg;
+				break;
+			case 'v':
+				printf(VERSION"\n");
+				exit(0);
 				break;
 			default:
 				/*
